@@ -1,13 +1,16 @@
 package com.api.uniconnect.model;
 
+import com.api.uniconnect.enums.StatusUsuario;
 import jakarta.persistence.*;
+
+import java.time.LocalDate;
 
 @Entity(name = "usuario")
 @Table(name = "usuario")
 public class Usuario {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(nullable = false)
@@ -17,8 +20,12 @@ public class Usuario {
     private String email;
 
     @Column(name = "data_cadastro", nullable = false)
-    private String dataCadastro;
-
+    private LocalDate dataCadastro;
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private StatusUsuario status;
+    @Column(name = "data_nascimento")
+    private LocalDate dataNascimento;
     private String telefone;
     private String cep;
     private String endereco;
@@ -27,14 +34,13 @@ public class Usuario {
     private String bairro;
     private String cidade;
     private String estado;
-
     @Column(name = "senha_hash")
     private String senhaHash;
 
     public Usuario() {
     }
 
-    public Usuario(Integer id, String nome, String email, String dataCadastro) {
+    public Usuario(Integer id, String nome, String email, LocalDate dataCadastro) {
         this.id = id;
         this.nome = nome;
         this.email = email;
@@ -67,13 +73,21 @@ public class Usuario {
         this.email = email;
     }
 
-    public String getDataCadastro() {
+    public LocalDate getDataCadastro() {
         return dataCadastro;
     }
 
-    public void setDataCadastro(String dataCadastro) {
+    public void setDataCadastro(LocalDate dataCadastro) {
         this.dataCadastro = dataCadastro;
     }
+
+    public StatusUsuario getStatus() { return status; }
+
+    public void setStatus(StatusUsuario status) { this.status = status; }
+
+    public LocalDate getDataNascimento() { return dataNascimento; }
+
+    public void setDataNascimento(LocalDate dataNascimento) { this.dataNascimento = dataNascimento; }
 
     public String getTelefone() {
         return telefone;
