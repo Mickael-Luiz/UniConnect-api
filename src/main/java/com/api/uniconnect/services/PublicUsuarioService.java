@@ -3,11 +3,13 @@ package com.api.uniconnect.services;
 import com.api.uniconnect.dto.UsuarioCreateDTO;
 import com.api.uniconnect.dto.UsuarioDTO;
 import com.api.uniconnect.enums.StatusUsuario;
+import com.api.uniconnect.exception.EmailException;
 import com.api.uniconnect.mapper.UsuarioMapper;
 import com.api.uniconnect.model.Usuario;
 import com.api.uniconnect.model.UsuarioConfirmacao;
 import com.api.uniconnect.repository.UsuarioConfirmacaoRepository;
 import com.api.uniconnect.repository.UsuarioRepository;
+import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,10 +26,11 @@ public class PublicUsuarioService {
     private UsuarioMapper usuarioMapper;
     @Autowired
     private UsuarioConfirmacaoRepository usuarioConfirmacaoRepository;
+    @Autowired
+    private EmailService emailService;
 
 
     public UsuarioDTO criarUsuario(UsuarioCreateDTO dto) {
-        System.out.println("PublicUsuarioService está rodando!");
         Usuario usuario = usuarioMapper.toEntity(dto);
         usuario.setStatus(StatusUsuario.NAO_CONFIRMADO);
         usuario.setDataCadastro(LocalDate.now());
@@ -40,11 +43,12 @@ public class PublicUsuarioService {
         confirmacao.setDataExpiracao(LocalDateTime.now().plusHours(1));
         usuarioConfirmacaoRepository.save(confirmacao);
 
-        enviarEmailConfirmacao(usuario.getEmail(), token);
+        try {
+            emailService.enviarEmailConfirmacaoHtml(usuario.getEmail(), token);
+        } catch (MessagingException e) {
+            throw new EmailException("Erro ao enviar email de confirmação", e);
+        }
         return usuarioMapper.toDTO(usuario);
     }
 
-    private void enviarEmailConfirmacao(String email, String token) {
-        System.out.println("Enviar email para: " + email + "com link: http://localhost:4200/confirmar?token=" + token);
-    }
 }
