@@ -20,7 +20,7 @@ public class EmailService {
                 "<body>" +
                 "<h2>Bem-vindo ao UniConnect!</h2>" +
                 "<p>Por favor, clique no link abaixo para confirmar seu cadastro:</p>" +
-                "<a href='http://localhost:4200/confirmar?token=" + token + "'>Confirmar cadastro</a>" +
+                "<a href='http://localhost:4200/registrar/confirmar?token=" + token + "'>Confirmar cadastro</a>" +
                 "<p>Esse link expira em 1 hora.</p>" +
                 "</body>" +
                 "</html>";
