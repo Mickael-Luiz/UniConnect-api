@@ -1,10 +1,12 @@
 package com.api.uniconnect.controller;
 
+import com.api.uniconnect.dto.ConfirmarSenhaDTO;
 import com.api.uniconnect.dto.UsuarioCreateDTO;
 import com.api.uniconnect.dto.UsuarioDTO;
 import com.api.uniconnect.services.PublicUsuarioService;
 import com.api.uniconnect.services.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin(origins = "http://localhost:4200")
@@ -18,5 +20,11 @@ public class PublicUsuarioController {
     @PostMapping
     public UsuarioDTO criarUsuario(@RequestBody UsuarioCreateDTO dto) {
         return publicUsuarioService.criarUsuario(dto);
+    }
+
+    @PostMapping("/confirmar-senha")
+    public ResponseEntity<Void> confirmarSenha(@RequestBody ConfirmarSenhaDTO dto) {
+        publicUsuarioService.confirmarSenha(dto);
+        return ResponseEntity.ok().build();
     }
 }

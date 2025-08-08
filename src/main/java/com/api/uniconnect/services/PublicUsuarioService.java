@@ -1,5 +1,6 @@
 package com.api.uniconnect.services;
 
+import com.api.uniconnect.dto.ConfirmarSenhaDTO;
 import com.api.uniconnect.dto.UsuarioCreateDTO;
 import com.api.uniconnect.dto.UsuarioDTO;
 import com.api.uniconnect.enums.StatusUsuario;
@@ -11,7 +12,10 @@ import com.api.uniconnect.repository.UsuarioConfirmacaoRepository;
 import com.api.uniconnect.repository.UsuarioRepository;
 import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -28,6 +32,8 @@ public class PublicUsuarioService {
     private UsuarioConfirmacaoRepository usuarioConfirmacaoRepository;
     @Autowired
     private EmailService emailService;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
 
     public UsuarioDTO criarUsuario(UsuarioCreateDTO dto) {
@@ -49,6 +55,21 @@ public class PublicUsuarioService {
             throw new EmailException("Erro ao enviar email de confirmação", e);
         }
         return usuarioMapper.toDTO(usuario);
+    }
+
+    public void confirmarSenha(ConfirmarSenhaDTO dto) {
+        UsuarioConfirmacao usuarioConfirmacao = usuarioConfirmacaoRepository.findByToken(dto.getToken())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Token Inválido"));
+        if(usuarioConfirmacao.getDataExpiracao().isBefore(LocalDateTime.now())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Token Expirado");
+        }
+
+        Usuario usuario = usuarioConfirmacao.getUsuario();
+
+        usuario.setSenhaHash(passwordEncoder.encode(dto.getSenha()));
+        usuario.setStatus(StatusUsuario.ATIVO);
+        usuarioRepository.save(usuario);
+        usuarioConfirmacaoRepository.delete(usuarioConfirmacao);
     }
 
 }
