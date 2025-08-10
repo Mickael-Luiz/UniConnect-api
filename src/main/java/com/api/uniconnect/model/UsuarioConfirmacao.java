@@ -1,9 +1,13 @@
 package com.api.uniconnect.model;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "usuario_confirmacao")
 public class UsuarioConfirmacao {
@@ -13,8 +17,12 @@ public class UsuarioConfirmacao {
     private Integer id;
 
     @OneToOne
-    @JoinColumn(name = "usuario_id", nullable = false)
-    private Usuario usuario;
+    @JoinColumn(name = "usuario_pf_id", nullable = false)
+    private UsuarioPf usuarioPf;
+
+    @OneToOne
+    @JoinColumn(name = "usuario_pj_id", nullable = false)
+    private UsuarioPj usuarioPj;
 
     @Column(nullable = false, unique = true)
     private String token;
@@ -30,12 +38,20 @@ public class UsuarioConfirmacao {
         this.id = id;
     }
 
-    public Usuario getUsuario() {
-        return usuario;
+    public UsuarioPf getUsuarioPf() {
+        return usuarioPf;
     }
 
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
+    public void setUsuarioPf(UsuarioPf usuarioPf) {
+        this.usuarioPf = usuarioPf;
+    }
+
+    public UsuarioPj getUsuarioPj() {
+        return usuarioPj;
+    }
+
+    public void setUsuarioPj(UsuarioPj usuarioPj) {
+        this.usuarioPj = usuarioPj;
     }
 
     public String getToken() {

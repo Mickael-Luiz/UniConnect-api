@@ -1,5 +1,6 @@
 package com.api.uniconnect.services;
 
+import com.api.uniconnect.enums.TiposEnum;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,14 +14,14 @@ public class EmailService {
     @Autowired
     private JavaMailSender mailSender;
 
-    public void enviarEmailConfirmacaoHtml(String destino, String token) throws MessagingException {
+    public void enviarEmailConfirmacaoHtml(String destino, String token, TiposEnum.TipoUsuario tipo) throws MessagingException {
         String assunto = "Confirmação de Cadastro - UniConnect";
 
         String corpo = "<html>" +
                 "<body>" +
                 "<h2>Bem-vindo ao UniConnect!</h2>" +
                 "<p>Por favor, clique no link abaixo para confirmar seu cadastro:</p>" +
-                "<a href='http://localhost:4200/registrar/confirmar?token=" + token + "'>Confirmar cadastro</a>" +
+                "<a href='http://localhost:4200/registrar/confirmar?token=" + token + "&tipo=" + tipo + "'>Confirmar cadastro</a>" +
                 "<p>Esse link expira em 1 hora.</p>" +
                 "</body>" +
                 "</html>";

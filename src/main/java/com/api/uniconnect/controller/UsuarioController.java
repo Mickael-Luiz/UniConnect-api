@@ -1,10 +1,9 @@
 package com.api.uniconnect.controller;
 
+import com.api.uniconnect.model.UsuarioPf;
+import com.api.uniconnect.repository.UsuarioPfRepository;
 import com.api.uniconnect.services.UsuarioService;
 import com.api.uniconnect.dto.UsuarioCreateDTO;
-import com.api.uniconnect.dto.UsuarioDTO;
-import com.api.uniconnect.model.Usuario;
-import com.api.uniconnect.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,18 +16,13 @@ import java.util.List;
 public class UsuarioController {
 
     @Autowired
-    UsuarioRepository usuarioRepository;
+    UsuarioPfRepository usuarioPfRepository;
     @Autowired
     UsuarioService usuarioService;
 
-    @PostMapping
-    public UsuarioDTO criarUsuario(@RequestBody UsuarioCreateDTO dto) {
-        return usuarioService.criarUsuario(dto);
-    }
-
     @GetMapping
     public ResponseEntity getAll() {
-        List<Usuario> listUsuarios = usuarioRepository.findAll();
+        List<UsuarioPf> listUsuarios = usuarioPfRepository.findAll();
         return ResponseEntity.status(HttpStatus.OK).body(listUsuarios);
     }
 }

@@ -1,0 +1,20 @@
+CREATE TABLE usuario_pj (
+    id SERIAL PRIMARY KEY,
+    nome_fantasia VARCHAR(255),
+    razao_social VARCHAR(255) NOT NULL,
+    cnpj VARCHAR(18) NOT NULL UNIQUE,
+    email VARCHAR(255) UNIQUE,
+    status VARCHAR(15),
+    contato1 VARCHAR(20),
+    contato2 VARCHAR(20),
+    cep VARCHAR(10),
+    uf CHAR(2),
+    cidade VARCHAR(100),
+    bairro VARCHAR(100),
+    logradouro VARCHAR(100),
+    numero VARCHAR(10),
+    complemento VARCHAR(100),
+    data_cadastro TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    data_inativacao TIMESTAMP WITHOUT TIME ZONE,
+    senha_hash VARCHAR(255)
+)
