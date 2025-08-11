@@ -15,5 +15,6 @@ CREATE TABLE usuario_pf (
     estado VARCHAR(50),
     status VARCHAR(15),
     data_cadastro TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    data_ultimo_acesso TIMESTAMP WITHOUT TIME ZONE,
     senha_hash VARCHAR(255)
 )

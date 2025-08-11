@@ -15,6 +15,7 @@ CREATE TABLE usuario_pj (
     numero VARCHAR(10),
     complemento VARCHAR(100),
     data_cadastro TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    data_ultimo_acesso TIMESTAMP WITHOUT TIME ZONE,
     data_inativacao TIMESTAMP WITHOUT TIME ZONE,
     senha_hash VARCHAR(255)
 )
